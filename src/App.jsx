@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import EditBlog from "./components/EditBlog"
 import Blog from "./components/Blog"
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -9,6 +10,8 @@ function App() {
     const [blogs, setBlogs] = useState([])
     const [allBlogs, setAllBlogs] = useState([])
     const [author, setAuthor] = useState("All")
+    const [toggle, setToggle] = useState(false)
+    const [text, setText] = useState("")
 
     useEffect(() => {
         const fetchData = async () => {
@@ -33,6 +36,25 @@ function App() {
         }
     }
 
+    const changeToggle = () => {
+        setToggle(prevState => !prevState)
+    }
+
+    const submitUpdate = (id) => {
+        const mappedBlog = allBlogs.map(blog => {
+            const updatedBlog = blog
+            if(blog.id === id) {
+                updatedBlog.text = text
+            } 
+            return updatedBlog
+        })
+        setAllBlogs(mappedBlog)
+    }
+
+    const changeText = e => {
+        setText(e.target.value)
+    }
+
     return (
         <div className='App'>
 
@@ -45,6 +67,10 @@ function App() {
                     }) }
                 </select>
                 <button onClick={ filterAuthor }>Filter</button>
+                { blogs.length === 1
+                ? <button onClick={ changeToggle }>Edit</button>
+                : ""
+                }
             </div>
 
             
@@ -55,12 +81,26 @@ function App() {
                 />
             }) }
 
-            <input type="number" value={ limit } onChange={ e => setLimit(e.target.value) }/>
-            <input type="number" value={ page } onChange={ e => setPage(e.target.value) }/>
+            { toggle === true
+                ? <EditBlog
+                    blogsProp={ blogs[0] }
+                    changeTextProp={ changeText }
+                    submitUpdateProp={ submitUpdate }
+                />
+                : ""
+            }
+
+            { blogs.length > 1
+            ? <input type="number" value={ limit } onChange={ e => setLimit(e.target.value) }/>
+            :  ""
+            }
+            { blogs.length > 1
+            ? <input type="number" value={ page } onChange={ e => setPage(e.target.value) }/>
+            :  ""
+            }
 
         </div>
     )
-
 }
 
 export default App
