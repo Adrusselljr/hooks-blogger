@@ -10,9 +10,7 @@ function App() {
 
     useEffect(() => {
         const fetchData = async () => {
-            const data = await fetch(
-                `https://6239ddb128bcd99f02763cfe.mockapi.io/blogs?limit=${limit}&page=${page}`
-            )
+            const data = await fetch(`https://6239ddb128bcd99f02763cfe.mockapi.io/blogs?limit=${limit}&page=${page}`)
             const json = await data.json()
             setBlogs(json)
             return json
