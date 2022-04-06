@@ -73,6 +73,21 @@ function App() {
                 }
             </div>
 
+            <div className="inputs">
+                { blogs.length > 1
+                ? (
+                    <>
+                        <label>Limit: </label>
+                        <input type="number" value={ limit } onChange={ e => setLimit(e.target.value) }/>
+                        <label>Page: </label>
+                        <input type="number" value={ page } onChange={ e => setPage(e.target.value) }/>
+                    </>
+                )
+                : (
+                    <></>
+                )}
+            </div>
+
             
             { blogs.map(blog => {
                 return <Blog
@@ -88,15 +103,6 @@ function App() {
                     submitUpdateProp={ submitUpdate }
                 />
                 : ""
-            }
-
-            { blogs.length > 1
-            ? <input type="number" value={ limit } onChange={ e => setLimit(e.target.value) }/>
-            :  ""
-            }
-            { blogs.length > 1
-            ? <input type="number" value={ page } onChange={ e => setPage(e.target.value) }/>
-            :  ""
             }
 
         </div>
